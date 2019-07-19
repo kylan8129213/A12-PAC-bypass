@@ -1,0 +1,10 @@
+__bcopyin
+    ...
+MRS X10, TPIDR_EL1
+LDR X11, [X10,#thread.recover]
+ADRP X3, #copyio_error@PAGE
+ADD X3, X3, #copyio_error@PAGEOFF ; handler address
+STR X3, [X10,#thread.recover] ; Set new recovery handler ...
+; Load thread pointer
+; Save previous recovery
+; Load the recovery

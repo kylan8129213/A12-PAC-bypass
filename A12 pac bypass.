@@ -1,0 +1,17 @@
+LEXT(_bcopyin)
+    ARM64_STACK_PROLOG
+    PUSH_FRAME
+    SET_RECOVERY_HANDLER x10, x11, x3, copyio_error
+...
+    sub         x2, x2, #16
+1:
+/* 16 bytes at a time */
+ldp         x3, x4, [x0], #16
+stp         x3, x4, [x1], #16
+subs        x2, x2, #16
+b.ge        1b
+...
+    CLEAR_RECOVERY_HANDLER x10, x11
+    mov         x0, #0
+    POP_FRAME
+    ARM64_STACK_EPILOG
